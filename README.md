@@ -1,4 +1,4 @@
-# Software-Engineering-I
+# SOFTWARE ENGINEERING - I
 ## Yhack Bryan Aycaya Paco
 ### Ingeniería Estadística e Informática
 ### Universidad Nacional del Altiplano de Puno
