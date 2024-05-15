@@ -16,5 +16,5 @@ Week 02:
   - [Ver detalles](https://github.com/T1Jack/Software-Engineering/blob/main/IEEE%20830.pdf) 
 
 Week 03:
-- **03 - Funcionalidad**
+- **05 - Funcionalidad**
   - [Ver detalles](https://github.com/T1Jack/Software-Engineering/blob/main/Funcionalidad.pdf)
