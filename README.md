@@ -18,3 +18,5 @@ Week 02:
 Week 03:
 - **05 - Funcionalidad**
   - [Ver detalles](https://github.com/T1Jack/Software-Engineering/blob/main/Funcionalidad.pdf)
+- **06 - Backlog**
+  - [Ver detalles](https://github.com/T1Jack/Software-Engineering/blob/main/Scrum%20-%20Backlog.pdf)
