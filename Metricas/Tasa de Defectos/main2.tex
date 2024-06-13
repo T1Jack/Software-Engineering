@@ -1,0 +1,98 @@
+\documentclass[a4,10pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\usepackage[
+backend=biber,
+style=ieee,
+]{biblatex}
+\usepackage{graphicx}
+
+% Definir una nueva función para agregar imágenes
+\newcommand{\agregarimagen}[2]{%
+    \begin{figure}[htbp]%
+        \centering%
+        \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{#1}%
+        \caption{#2}%
+        \label{fig:#1}%
+    \end{figure}%
+}
+
+\addbibresource{ref.bib}
+
+\pagestyle{fancy}
+\fancyhead[LO,L]{FINESI}
+\fancyhead[CO,C]{Ingeniería de Software I}
+\fancyhead[RO,R]{\today}
+\fancyfoot[LO,L]{Yhack Bryan Aycaya Paco}
+\fancyfoot[CO,C]{}
+\fancyfoot[RO,R]{Page. \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+
+\section{Tasa de Defectos}
+\hspace{0.6cm}La Tasa de Defectos es una métrica utilizada para cuantificar esta calidad al medir el número de defectos encontrados en relación con el tamaño del software o el esfuerzo invertido \cite{Farid2021, Akimova2021, Haldar2024}.
+
+\subsection{Definición y Tipos}
+\hspace{0.6cm}La Tasa de Defectos es una métrica que mide el número de defectos encontrados en una unidad de software en relación con su tamaño o esfuerzo invertido. Comúnmente se expresa en defectos por mil líneas de código (KLOC) o por horas de desarrollo.
+\begin{itemize}
+    \item \textbf{Tasa de Defectos por KLOC:} Mide los defectos por cada mil líneas de código.
+    \item \textbf{Tasa de Defectos por Hora de Desarrollo:} Relaciona los defectos con las horas de desarrollo invertidas.
+    \item \textbf{Tasa de Defectos por Fase del Desarrollo:} Considera los defectos detectados en diferentes fases del ciclo de vida del software.
+\end{itemize}
+
+\subsection{Aplicaciones y Limitaciones}
+\subsubsection{Aplicaciones}
+\begin{itemize}
+    \item \textbf{Evaluación de Calidad:} Permite determinar la calidad del software y detectar áreas que requieren mejoras \cite{Farid2021}.
+    \item \textbf{Mejora de Procesos:} Facilita la identificación de fases del desarrollo con alta incidencia de defectos \cite{Akimova2021}.
+    \item \textbf{Comparación de Proyectos:} Facilita la comparación de la calidad entre diferentes proyectos o versiones \cite{Haldar2024}.
+\end{itemize}
+
+\subsubsection{Limitaciones}
+\begin{itemize}
+    \item \textbf{Variabilidad en la Detección de Defectos:} La capacidad del equipo de pruebas puede influir significativamente en la tasa de defectos.
+    \item \textbf{Contexto del Proyecto:} La complejidad y el contexto del proyecto pueden influir en la tasa de defectos.
+    \item \textbf{Enfoque en Cantidad sobre Calidad:} Puede llevar a un enfoque excesivo en la reducción del número de defectos.
+\end{itemize}
+
+\hspace{0.6cm}A continuación, se presenta un ejemplo de cómo calcular la Tasa de Defectos utilizando Python:
+
+\begin{lstlisting}[language=Python, caption=Ejemplo de código en Python para calcular la Tasa de Defectos]
+def tasa_de_defectos(defectos, lineas_de_codigo):
+    if lineas_de_codigo <= 0:
+        raise ValueError("El numero de lineas de codigo debe ser mayor que cero.")
+    
+    kloc = lineas_de_codigo / 1000
+    tasa = defectos / kloc
+
+    return tasa
+
+def main():
+    try:
+        defectos_encontrados = int(input("Ingrese el numero total de defectos encontrados: "))
+        lineas_de_codigo_totales = int(input("Ingrese el numero total de lineas de codigo: "))
+        
+        tasa = tasa_de_defectos(defectos_encontrados, lineas_de_codigo_totales)
+        print(f"Tasa de defectos: {tasa:.2f} defectos por KLOC")
+    
+    except ValueError as e:
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+\hspace{0.6cm}La Tasa de Defectos es una métrica esencial para evaluar la calidad del software y mejorar los procesos de desarrollo. Aunque tiene sus limitaciones, proporciona una visión valiosa sobre el estado del software y áreas potenciales de mejora \cite{Farid2021, Akimova2021, Haldar2024}.
+
+\printbibliography
+
+\end{document}

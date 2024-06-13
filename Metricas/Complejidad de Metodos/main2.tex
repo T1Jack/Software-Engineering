@@ -1,0 +1,90 @@
+\documentclass[a4,10pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage[
+backend=biber,
+style=ieee,
+]{biblatex}
+
+\usepackage{graphicx}
+
+
+\addbibresource{ref.bib}
+
+\pagestyle{fancy}
+\fancyhead[LO,L]{FINESI}
+\fancyhead[CO,C]{Ingeniería de Software I}
+\fancyhead[RO,R]{\today}
+\fancyfoot[LO,L]{Yhack Bryan Aycaya Paco}
+\fancyfoot[CO,C]{}
+\fancyfoot[RO,R]{Page. \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+\section{Complejidad de Métodos}
+
+\hspace{0.6cm}La complejidad de métodos en software se refiere a la medida de la dificultad para entender, modificar y mantener un método o una función dentro de un programa. Varias métricas se utilizan para cuantificar esta complejidad, entre ellas la Complejidad Ciclomática, las métricas de Halstead y la longitud del código.
+
+\subsection{Definición y Tipos}
+
+\hspace{0.6cm}La complejidad de métodos en software se refiere a la medida de la dificultad para entender, modificar y mantener un método o una función dentro de un programa. Esta complejidad se puede medir utilizando diversas métricas.
+
+\begin{itemize}
+    \item \textbf{Complejidad Ciclomática:} Desarrollada por Thomas McCabe en 1976, esta métrica mide el número de caminos independientes a través del código de un programa. Se calcula usando la fórmula \( M = E - N + 2P \), donde \( E \) es el número de aristas en el grafo de flujo de control, \( N \) es el número de nodos y \( P \) es el número de componentes conectados \cite{ebert2016}.
+    \item \textbf{Métricas de Halstead:} Introducidas por Maurice Halstead, estas métricas analizan los operadores y operandos en el código para medir la complejidad. Algunas de las métricas de Halstead incluyen el Volumen (V), el Esfuerzo (E) y la Longitud (N). El Volumen, por ejemplo, se calcula como \( V = N \cdot \log_2(n) \), donde \( N \) es la longitud del programa y \( n \) es el tamaño del vocabulario del programa \cite{wijendra2021}.
+    \item \textbf{Líneas de Código (LOC):} Una métrica simple que cuenta el número total de líneas de código en un método. Aunque no mide directamente la complejidad lógica, un alto número de LOC puede indicar que el código es difícil de manejar y entender \cite{odeh2023}.
+\end{itemize}
+
+\subsection{Aplicaciones y Limitaciones}
+\subsubsection{Aplicaciones}
+\begin{itemize}
+    \item \textbf{Evaluación de Calidad:} Las métricas de complejidad ayudan a los desarrolladores a identificar partes del código que pueden ser propensas a errores y difíciles de mantener \cite{ebert2016}.
+    \item \textbf{Mejora del Código:} Ayudan a decidir cuándo modularizar el código para mejorar su mantenibilidad y facilidad de prueba \cite{:/content/journals/10.1049/sej.1994.0014}.
+    \item \textbf{Planificación de Pruebas:} La complejidad ciclómatica, en particular, se usa para determinar el número mínimo de casos de prueba necesarios para cubrir todos los caminos posibles en el código \cite{odeh2023}.
+\end{itemize}
+
+\subsubsection{Limitaciones}
+\begin{itemize}
+    \item \textbf{Interpretación Variable:} La interpretación de las métricas puede variar dependiendo de las herramientas utilizadas y del contexto del proyecto. Diferentes herramientas de análisis estático pueden proporcionar resultados diferentes para las mismas métricas \cite{wijendra2021}.
+    \item \textbf{Limitación en Métricas Individuales:} Ninguna métrica individual puede capturar completamente la complejidad de un sistema. Es importante utilizar múltiples métricas en conjunto para obtener una visión más completa .
+    \item \textbf{No Correlación Directa con Defectos:} Algunas investigaciones han mostrado que métricas como la complejidad ciclómatica no siempre están correlacionadas con el número de defectos en el código \cite{odeh2023}.
+\end{itemize}
+
+A continuación, se presenta un ejemplo de cómo calcular la Complejidad Ciclomática utilizando Python y la biblioteca \texttt{radon}:
+
+\begin{lstlisting}[language=Python, caption=Ejemplo de código en Python para calcular la Complejidad Ciclomática]
+import subprocess
+import os
+
+def calcular_complejidad_ciclomatica(nombre_archivo):
+    try:
+        resultado = subprocess.check_output(['radon', 'cc', '-s', nombre_archivo])
+        resultado = resultado.decode('utf-8')
+        print(f"Complejidad ciclomatica para {nombre_archivo}:\n{resultado}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error al calcular la complejidad ciclomatica: {e}")
+
+def main():
+    nombre_archivo = input("Ingrese el nombre del archivo de codigo: ")
+    if not os.path.isfile(nombre_archivo):
+        print("El archivo no existe.")
+        return
+    
+    calcular_complejidad_ciclomatica(nombre_archivo)
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+La complejidad de métodos es una métrica esencial para evaluar la calidad del software y mejorar los procesos de desarrollo. Aunque cada métrica tiene sus limitaciones, el uso combinado de varias métricas proporciona una visión más completa del estado del software y las áreas potenciales de mejora.
+
+\printbibliography
+
+\end{document}
