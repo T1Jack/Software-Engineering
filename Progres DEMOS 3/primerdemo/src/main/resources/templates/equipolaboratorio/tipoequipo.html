@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="utf-8">
+    <title>Tipo Equipo Laboratorio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .table-container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Recursos</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/admin-page}">Inicio (Admin)</a>
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''USER'')')}" th:href="@{/user-page}">Inicio (User)</a>
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''TECNICO'')')}" th:href="@{/tecnic-page}">Inicio (Tecnico)</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TECNICO')">
+                    <a class="nav-link" href="/equipolaboratorio/tipoequipo/nuevo">Agregar Tipo de Equipos</a>
+                </li>          
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="text-center">
+            <h1>Lista de Tipos de Equipos Laboratorio</h1>
+        </div>
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="tipoequipolab: ${listaTipoEquiposLab}">
+                        <td th:text="${tipoequipolab.id}"></td>
+                        <td th:text="${tipoequipolab.nombre}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2LcJ6pGs4aCTNfFlCg6Y5z5pBz9+TNRzLRnQ2zx2+" crossorigin="anonymous"></script>
+</body>
+</html>

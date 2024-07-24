@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding-top: 60px; /* Para el espacio del navbar fijo */
+        }
+
+        .navbar {
+            background-color: #00695c;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .navbar-brand, .navbar-nav .nav-link {
+            color: #fff !important;
+        }
+
+        .navbar .navbar-brand:hover, .navbar-nav .nav-link:hover {
+            color: #e0f7fa !important;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        h2 {
+            color: #00695c;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            width: 100%;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #00695c;
+        }
+
+        .form-control {
+            border-radius: 0.25rem;
+            border-color: #00695c;
+        }
+
+        .btn-primary {
+            background-color: #00695c;
+            border-color: #00695c;
+            color: #fff;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background-color: #004d40;
+            transform: scale(1.05);
+        }
+
+        .links {
+            margin-top: 20px;
+        }
+
+        .links a {
+            color: #00695c;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        .alert.error {
+            background-color: #d9534f;
+        }
+
+        .alert.success {
+            background-color: #5cb85c;
+        }
+
+        .terms-box {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #00695c;
+            border-radius: 5px;
+            padding: 10px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+            color: #333;
+            background-color: #f7f7f7;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <a class="navbar-brand" href="#">NONAME</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login"><strong>Login</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registration"><strong>Register</strong></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="login-container">
+        <h2>¡Te damos la bienvenida a NONAME!</h2>
+        <p>Comienza ingresando tus datos para conocer quién eres.</p>
+        <div class="alert error" th:if="${message != null}">[[${message}]]</div>
+        <form class="needs-validation" th:action="@{/registration}" method="post" role="form" th:object="${user}" novalidate>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom01">Nombre Completo</label>
+                    <input type="text" class="form-control" id="validationCustom01" th:field="*{firstname}" placeholder="Introduce tu nombre completo" required>
+                    <div class="valid-feedback">
+                        ¡Se ve bien!
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom02">Apellido Completo</label>
+                    <input type="text" class="form-control" id="validationCustom02" th:field="*{lastname}" placeholder="Introduce tu apellido completo" required>
+                    <div class="valid-feedback">
+                        ¡Se ve bien!
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom03">Teléfono</label>
+                    <input type="text" class="form-control" id="validationCustom03" th:field="*{phone}" placeholder="Introduce tu número de contacto" required>
+                    <div class="invalid-feedback">
+                        Por favor, proporciona un teléfono válido.
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom04">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="validationCustom04" th:field="*{email}" placeholder="Introduce tu correo electrónico" required>
+                    <div class="invalid-feedback">
+                        Por favor, proporciona un correo electrónico válido.
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="validationCustom05">Contraseña</label>
+                    <input type="password" class="form-control" id="validationCustom05" th:field="*{password}" placeholder="Introduce tu contraseña" required>
+                    <div class="invalid-feedback">
+                        Por favor, proporciona una contraseña.
+                    </div>
+                </div>
+            </div>
+            <div class="terms-box">
+                <h5>Términos y Condiciones</h5>
+                <p>Aquí van los términos y condiciones del servicio. Este es un texto de ejemplo para mostrar cómo se vería el cuadro de términos y condiciones.</p>
+                <p>Por favor, lea estos términos y condiciones detenidamente antes de proceder con el registro.</p>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        Acepto los términos y condiciones
+                    </label>
+                    <div class="invalid-feedback">
+                        Debes aceptar antes de enviar.
+                    </div>
+                </div>
+            </div>
+            <div class="g-recaptcha" data-sitekey="6LcWieQpAAAAAHh-M-mJXcYvx_7bcV9rr98BlJRp"></div>
+            <br />
+            <button class="btn btn-primary" type="submit">Registrar</button>
+        </form>
+        <div class="links">
+            <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a></p>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+</html>

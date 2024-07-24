@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="utf-8">
+    <title>Lista de Medicamentos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <style>
+        .container {
+            margin-top: 30px;
+        }
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .card {
+            width: 18rem;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+        }
+        .table-container {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Recursos</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/admin-page}">Inicio (Admin)</a>
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''USER'')')}" th:href="@{/user-page}">Inicio (User)</a>
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''TECNICO'')')}" th:href="@{/tecnic-page}">Inicio (Tecnico)</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TECNICO')">
+                    <a class="nav-link" href="/medicamento/nuevo">Nuevo Medicamento</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container text-center">
+        <div>
+            <h1>Lista de Medicamentos</h1>
+        </div>
+        <div class="card-container">
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/medicamento/nuevo}" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TECNICO')">
+                        <h2 class="card-title">Nuevo Medicamento</h2>
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/naturalezaquimica}">
+                        <h2 class="card-title">Gestionar Naturaleza Química</h2>
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/formafarmaceutica}">
+                        <h2 class="card-title">Gestionar Forma Farmacéutica</h2>
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/viadosificacion}">
+                        <h2 class="card-title">Gestionar Vía de Dosificación</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Fuerza</th>
+                        <th>Cantidad Disponible</th>
+                        <th>Naturaleza Química</th>
+                        <th>Forma Farmacéutica</th>
+                        <th>Vía de Dosificación</th>
+                        <th sec:authorize="hasAuthority('ADMIN') or hasAuthority('TECNICO')">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="medicamento : ${listaMedicamentos}">
+                        <td th:text="${medicamento.id}"></td>
+                        <td th:text="${medicamento.nombre}"></td>
+                        <td th:text="${medicamento.fuerza}"></td>
+                        <td th:text="${medicamento.cantidadDisponible}"></td>
+                        <td th:text="${medicamento.naturalezaQuimica.nombre}"></td>
+                        <td th:text="${medicamento.formaFarmaceutica.nombre}"></td>
+                        <td th:text="${medicamento.viaDosificacion.nombre}"></td>
+                        <td sec:authorize="hasAuthority('ADMIN') or hasAuthority('TECNICO')">
+                            <a th:href="@{/medicamento/editar/{id}(id=${medicamento.id})}" class="btn btn-info btn-sm">Editar</a>
+                            <a th:href="@{/medicamento/eliminar/{id}(id=${medicamento.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLR6Bo+eU5flLZf5V9RcPh+JFVx8ABT9+Q6t4st6W9" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2LcwsNnjz9yXl5eStvcxLg0B5HjHqbyhZMEHPOd8zY" crossorigin="anonymous"></script>
+</body>
+</html>

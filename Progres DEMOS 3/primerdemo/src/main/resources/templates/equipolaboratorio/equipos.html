@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="utf-8">
+<title>Equipos de Laboratorio</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<style>
+    .container {
+        margin-top: 30px;
+    }
+    .card-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 30px;
+    }
+    .card {
+        width: 18rem;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.05);
+    }
+    .card a {
+        text-decoration: none;
+        color: inherit;
+    }
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 15px;
+    }
+    .table-container {
+        margin-top: 30px;
+    }
+</style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Recursos</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/admin-page}">Inicio (Admin)</a>
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''USER'')')}" th:href="@{/user-page}">Inicio (User)</a>
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''TECNICO'')')}" th:href="@{/tecnic-page}">Inicio (Tecnico)</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container text-center">
+        <div>
+            <h1>Lista de Equipos de Laboratorio</h1>
+        </div>
+        <div class="card-container">
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/equipolaboratorio/equipos/nuevo}">
+                        <h2 class="card-title">Nuevo Equipo de Laboratorio</h2>
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/equipolaboratorio/tipoequipo}">
+                        <h2 class="card-title">Tipo de Equipo de Laboratorio</h2>
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/categorias}">
+                        <h2 class="card-title">Lista de Categorías de Marcas</h2>
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/marcas}">
+                        <h2 class="card-title">Lista de Marcas</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Tipo de Equipo</th>
+                        <th>Modelo</th>
+                        <th>Fecha de Adquisición</th>
+                        <th>Marca</th>
+                        <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')') || #authorization.expression('hasAuthority(''TECNICO'')')}">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="equipoLaboratorio : ${listaEquiposLaboratorio}">
+                        <td th:text="${equipoLaboratorio.id}"></td>
+                        <td th:text="${equipoLaboratorio.nombre}"></td>
+                        <td th:text="${equipoLaboratorio.tipoEquipoLab.nombre}"></td>
+                        <td th:text="${equipoLaboratorio.modelo}"></td>
+                        <td th:text="${equipoLaboratorio.fechaAdquisicion}"></td>
+                        <td th:text="${equipoLaboratorio.marca.nombre}"></td>
+                        <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')') || #authorization.expression('hasAuthority(''TECNICO'')')}">
+                            <a th:href="@{'/equipolaboratorio/equipos/editar/' + ${equipoLaboratorio.id}}" class="btn btn-info btn-sm">Editar</a> &nbsp;&nbsp; 
+                            <a th:href="@{'/equipolaboratorio/equipos/eliminar/' + ${equipoLaboratorio.id}}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLR6Bo+eU5flLZf5V9RcPh+JFVx8ABT9+Q6t4st6W9" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2LcwsNnjz9yXl5eStvcxLg0B5HjHqbyhZMEHPOd8zY" crossorigin="anonymous"></script>
+</body>
+</html>

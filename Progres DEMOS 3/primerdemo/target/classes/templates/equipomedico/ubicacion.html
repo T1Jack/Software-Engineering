@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="utf-8">
+<title>Lista de Ubicaciones</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Recursos</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/admin-page}">Inicio (Admin)</a>
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''USER'')')}" th:href="@{/user-page}">Inicio (User)</a>
+                    <a class="nav-link" th:if="${#authorization.expression('hasAuthority(''TECNICO'')')}" th:href="@{/tecnic-page}">Inicio (Tecnico)</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN') or hasAuthority('TECNICO')">
+                    <a class="nav-link" href="/ubicacion/nuevo">Nueva Ubicación</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container text-center">
+        <div>
+            <h1>Lista de Ubicaciones</h1>
+        </div>
+        <div>
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th sec:authorize="hasAuthority('ADMIN') or hasAuthority('TECNICO')">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="ubicacion : ${listaUbicaciones}">
+                        <td th:text="${ubicacion.id}"></td>
+                        <td th:text="${ubicacion.nombre}"></td>
+                        <td sec:authorize="hasAuthority('ADMIN') or hasAuthority('TECNICO')">
+                            <a th:href="@{/ubicacion/editar/{id}(id=${ubicacion.id})}" class="btn btn-info">Editar</a>
+                            <a th:href="@{/ubicacion/eliminar/{id}(id=${ubicacion.id})}" class="btn btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
